@@ -4,11 +4,13 @@ const app = express();
 const port = process.env.APP_PORT || 3000;
 
 const authRoute = require("./routes/auth.routes");
+const postRoute = require("./routes/post.routes");
 
 app.use(express.json());
 
 // routes
 app.use("/api", authRoute);
+app.use("/api", postRoute);
 
 // API check
 app.get("/api/health", (req, res) => {

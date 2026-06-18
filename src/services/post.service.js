@@ -2,6 +2,7 @@ const {
   createPost: createPostRepository,
   getAllPosts: getAllPostRepository,
   getPostById: getPostByIdRepository,
+  deletePost: deletePostRepository,
 } = require("../repositories/post.repository.js");
 
 const createPost = async ({ title, content, userId }) => {
@@ -42,8 +43,27 @@ const getPostById = async (id) => {
   return post;
 };
 
+const deletePost = async (id, userId) => {
+  if (isNaN(id)) {
+    throw new Error("Invalid post id");
+  }
+
+  const post = await getPostByIdRepository(Number(id));
+
+  if (!post) {
+    throw new Error("Post not found");
+  }
+
+  if (userId !== post.userId) {
+    throw new Error("Can't delete this post");
+  }
+
+  return await deletePostRepository(Number(id));
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
+  deletePost,
 };
